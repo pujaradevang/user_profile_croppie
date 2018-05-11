@@ -1,0 +1,51 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+.file-upload-label {
+    cursor: pointer;
+}
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+}
+.user-profile-image {
+    position: relative;
+    width: 100%;
+}
+.label-main-section .upload-pic .user-profile-image img {
+    width: 300px !important;
+}
+.user-profile-image .img-responsive {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+.user-profile-image .edit-image, #label-release-img .view-img-hover {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+}
+.user-profile-image:hover .edit-image, #label-release-img:hover .view-img-hover {
+    opacity: 1;
+}
+.text-edit-image, #label-release-img:hover .view-img {
+    background-color: #888;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    font-family: 'Graphik Web',sans-serif !important;
+}
