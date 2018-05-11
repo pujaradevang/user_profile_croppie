@@ -1,4 +1,5 @@
 === Plugin Name ===
+User Profile Front End Upload with Croppie JS
 Contributors: www.wordpress.org/devangpujara
 Donate link:  http://example.com/
 Tags: comments, spam
