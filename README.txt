@@ -53,5 +53,5 @@ An answer to that question.
 
 
 Note:
-This is open source plugin so support of this plugin will not be provides but we will consider your support issue on github to make this plugin better.
+This is open source plugin so support of this plugin will not be provided but we will consider your support issue on github to make this plugin better.
 Thanks!!!
