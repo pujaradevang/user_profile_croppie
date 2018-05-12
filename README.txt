@@ -38,4 +38,4 @@ What about user profile field shortcode?
 1.0 =
 The future upgrade will have croppie js profile on backend also.
 Add this feature to the custom registration form.
-Show profile in the custom login form.  
+
