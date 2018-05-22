@@ -27,6 +27,7 @@ var file_frame;
       // We set multiple to false so only get one image from the uploader
       attachment = file_frame.state().get('selection').first().toJSON();
       $('#user_meta_image').val(attachment.url);
+      $('#user_meta_image_src').attr('src',attachment.url);
       $('span.description').html('To upload User profile submit update user profile.');
       // Do something with attachment.id and/or attachment.url here
     });
