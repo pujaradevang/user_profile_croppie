@@ -117,7 +117,7 @@ class User_profile_croppie_Public {
                       <div class="user-profile-image">
                                                   <img class="img-responsive" src="'.$user_profile_url.'" alt="">
                                                 <div class="edit-image">
-                          <div class="text-edit-image">Upload Image</div>
+                          <div class="text-edit-image"><span class="dashicons dashicons-upload"></span></div>
                         </div>
                       </div>
                     </label>
