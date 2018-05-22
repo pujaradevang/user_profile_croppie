@@ -113,42 +113,13 @@ class User_profile_croppie_Admin {
             <td>
           
                 <!-- Outputs the image after save -->
-                <img src="<?php echo esc_url( get_user_meta($user_id,'user_meta_image',true) ); ?>" style="width:150px;"><br />
+                <img src="<?php echo esc_url( get_user_meta($user_id,'user_meta_image',true) ); ?>" style="width:150px;" id="user_meta_image_src"><br />
                 <!-- Outputs the text field and displays the URL of the image retrieved by the media uploader -->
                 <input type="text" name="user_meta_image" id="user_meta_image" value="<?php echo esc_url_raw( get_user_meta($user_id,'user_meta_image',true) ); ?>" class="regular-text" />
                 <!-- Outputs the save button -->
                 <input type='button' class="additional-user-image button-primary" value="<?php _e( 'Upload Image', 'textdomain' ); ?>" id="uploadimage"/><br />
                 <input type='hidden' name='image_attachment_id' id='image_attachment_id' value=''>
-                <span class="description"><?php _e( 'Upload an additional image for your user profile.', 'textdomain' ); ?></span>
-                
-                  <?php /*
-                <form id="um_form" method="POST">
-                <div class="profile-pic col-md-4 col-sm-4 col-xs-12">
-                <div class="upload-pic">
-                                        <label class="file-upload-label" for="fileUpload">
-                      <input type="file" id="fileUpload" value="image" class="hidden">
-                      <div class="user-profile-image">
-                                                  <img class="img-responsive" src="http://2.gravatar.com/avatar/274e9893bb0891e89afa6cbe11af1553?s=192&d=mm&r=g 2x" alt="">
-                                                  <input type="hidden" id="imagebase64" name="imagebase64">    
-                                                <div class="edit-image">                                                                                            
-                          <div class="text-edit-image">Upload Image</div>
-                        </div>
-                      </div>
-                    </label>
-                     <div class="crop">
-                        <div id="upload-demo"></div>
-                        
-                        <input class="btn" type="submit" id="upload-image" name="upload_image" value="UPDATE PICTURE" style="display:none;">     
-                        <span class="profile-loader">
-                          <img src="" class="ajax-loader" style="display: none;">                  
-                          </span>
-                    </div>
-
-                </div>
-
-              </div>
-              </form>
-              */ ?>
+                <span class="description"><?php _e( 'Upload an additional image for your user profile.', 'textdomain' ); ?></span>                
             </td>
         </tr>
  
