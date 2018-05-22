@@ -34,7 +34,7 @@ label {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    width: 54%;
+    width: 15%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -46,12 +46,12 @@ label {
 .btn, .text-edit-image{
   position: relative;
   display: block;
-  margin: 30px auto;
-  padding: .375rem .75rem;  
+  /*margin: 30px auto;*/
+  padding: 8px 7px;  
   overflow: hidden;
   border-width: 0;
   outline: none;
-  border-radius: 2px;
+  border-radius: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .6);  
   background-color: #6c757d;
   color: #ecf0f1;  
