@@ -180,18 +180,20 @@ class User_profile_croppie {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		/**
-	     * Register shortcode via loader
-	     *
-	     * Use: [short-code-name args]
-	     *
-	     * @link http://example.com/
-	     */
-	    $this->loader->add_shortcode( "user-profile-field", $plugin_public, "user_profile_field_func", $priority = 10);
+	     	* Register shortcode via loader
+	     	*
+	     	* Use: [short-code-name args]
+	     	*
+	     	* @link http://example.com/
+	     	*/
+	    	$this->loader->add_shortcode( "user-profile-field", $plugin_public, "user_profile_field_func", $priority = 10);
 
-	    $this->loader->add_action( 'wp_ajax_nopriv_update_user_profile_picture', $plugin_public, 'update_user_profile_picture' );
+	    	$this->loader->add_action( 'wp_ajax_nopriv_update_user_profile_picture', $plugin_public, 'update_user_profile_picture' );
 		$this->loader->add_action( 'wp_ajax_update_user_profile_picture', $plugin_public, 'update_user_profile_picture' );
 
-		$this->loader->add_action('wp_footer', $plugin_public,'user_profile_field_script');
+		$this->loader->add_action('wp_head', $plugin_public,'user_profile_field_id');
+
+		$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media');
 
 	}
 
