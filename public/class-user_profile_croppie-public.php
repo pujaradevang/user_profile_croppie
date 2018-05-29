@@ -115,19 +115,20 @@ class User_profile_croppie_Public {
   	}
 
    	public function user_profile_field_func( $atts ) {
-	    $user_id = get_current_user_id();
-	    $user_profile_url = get_user_meta($user_id,'user_meta_image',true);
-	    if(!isset($user_profile_url)){
-	      $user_profile_url = get_avatar_url( $user_id, $args );
-	    }
+	  $user_id = get_current_user_id();
+    $user_profile_url = get_user_meta($user_id,'user_meta_image',true);
+     if(empty($user_profile_url)){
+        $user_profile_url = get_avatar_url( $user_id, $args );
+        $width = 'width:300px';
+      }
 		$user_profile_field = '';
 		$user_profile_field .= '<div class="profile-pic col-md-4 col-sm-4 col-xs-12">
                 <div class="upload-pic">
                                         <label class="file-upload-label" for="fileUpload">
                       <input type="file" id="fileUpload" value="image" class="hidden">
                       <div class="user-profile-image">
-			  <img class="img-responsive" src="'.$user_profile_url.'" alt="">
-			<div class="edit-image">
+                          <img class="img-responsive" src="'.$user_profile_url.'" alt="" style="'.$width.'">
+                          <div class="edit-image">
                           <div class="text-edit-image"><span class="dashicons dashicons-upload"></span></div>
                         </div>
                       </div>
