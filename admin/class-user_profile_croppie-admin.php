@@ -102,7 +102,9 @@ class User_profile_croppie_Admin {
 	}
 
 	function user_profile_croppie_field( $user ) { 
-	$user_id = get_current_user_id();	
+	//$user_id = get_current_user_id();	
+	$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
+	$user_profile_croppie_img = esc_url( get_user_meta($user_id,'user_meta_image',true) )
 	?> 
     <h3><?php _e( 'Additional User Meta', 'textdomain' ); ?></h3>
     <?php wp_enqueue_media(); ?>
@@ -110,17 +112,16 @@ class User_profile_croppie_Admin {
  
         <tr>
             <th><label for="user_meta_image"><?php _e( 'A special image for each user', 'textdomain' ); ?></label></th>
-            <td>
-          
+            <td>          
                 <!-- Outputs the image after save -->
-                <img src="<?php echo esc_url( get_user_meta($user_id,'user_meta_image',true) ); ?>" style="width:150px;" id="user_meta_image_src"><br />
+                <img src="<?php echo $user_profile_croppie_img; ?>" style="width:150px;" id="user_meta_image_src"><br />
                 <!-- Outputs the text field and displays the URL of the image retrieved by the media uploader -->
-                <input type="text" name="user_meta_image" id="user_meta_image" value="<?php echo esc_url_raw( get_user_meta($user_id,'user_meta_image',true) ); ?>" class="regular-text" />
+                <input type="text" name="user_meta_image" id="user_meta_image" value="<?php echo $user_profile_croppie_img; ?>" class="regular-text" />
                 <!-- Outputs the save button -->
                 <input type='button' class="additional-user-image button-primary" value="<?php _e( 'Upload Image', 'textdomain' ); ?>" id="uploadimage"/><br />
                 <input type='hidden' name='image_attachment_id' id='image_attachment_id' value=''>
                 <span class="description"><?php _e( 'Upload an additional image for your user profile.', 'textdomain' ); ?></span>                
-            </td>
+	    </td>
         </tr>
  
     </table><!-- end form-table -->
@@ -128,10 +129,10 @@ class User_profile_croppie_Admin {
 
 	function save_user_profile_croppie_meta( $user_id ) {
   	// only saves if the current user can edit user profiles
-    if ( !current_user_can( 'edit_user', $user_id ) ){
-        return false;
-    }
-    update_user_meta( $user_id, 'user_meta_image', $_POST['user_meta_image'] );
+    		if ( !current_user_can( 'edit_user', $user_id ) ){
+        		return false;
+    		}
+    		update_user_meta( $user_id, 'user_meta_image', $_POST['user_meta_image'] );
 	}
 
 }
