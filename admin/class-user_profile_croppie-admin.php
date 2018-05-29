@@ -102,9 +102,9 @@ class User_profile_croppie_Admin {
 	}
 
 	function user_profile_croppie_field( $user ) { 
-	//$user_id = get_current_user_id();	
-	$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
-	$user_profile_croppie_img = esc_url( get_user_meta($user_id,'user_meta_image',true) )
+	$curr_user_id = get_current_user_id();	
+	$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : $curr_user_id;
+	$user_profile_croppie_img = esc_url( get_user_meta($user_id,'user_meta_image',true) );
 	?> 
     <h3><?php _e( 'Additional User Meta', 'textdomain' ); ?></h3>
     <?php wp_enqueue_media(); ?>
