@@ -74,7 +74,7 @@ class User_profile_croppie_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user_profile_croppie-public.css', array(), $this->version, 'all' );
-    wp_enqueue_style( 'croppie-css', plugin_dir_url( __FILE__ ) . 'css/croppie.css', array(), $this->version, 'all' );
+    		wp_enqueue_style( 'croppie-css', plugin_dir_url( __FILE__ ) . 'css/croppie.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,41 +96,47 @@ class User_profile_croppie_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/user_profile_croppie-public.js', array( 'jquery' ), $this->version, false );
+    		wp_enqueue_media();
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/user_profile_croppie-public.js', array( 'jquery' ), $this->version, true );
+    		wp_localize_script( $this->plugin_name, 'wp_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		wp_enqueue_script( 'croppie', plugin_dir_url( __FILE__ ) . 'js/croppie.js', array( 'jquery' ), $this->version, false );
     
 
 	}
 
-	public function user_profile_field_func( $atts ) {
-	  $user_id = get_current_user_id();
-    $user_profile_url = get_user_meta($user_id,'user_meta_image',true);
-    if(!isset($user_profile_url)){
-      $user_profile_url = get_avatar_url( $user_id, $args );
-    }
+	  /**
+	   * This filter insures users only see their own media
+	   */
+  	public function filter_media( $query ) {
+	    // admins get to see everything
+	    if ( ! current_user_can( 'manage_options' ) )
+	      $query['author'] = get_current_user_id();
+	    return $query;
+  	}
+
+   	public function user_profile_field_func( $atts ) {
+	    $user_id = get_current_user_id();
+	    $user_profile_url = get_user_meta($user_id,'user_meta_image',true);
+	    if(!isset($user_profile_url)){
+	      $user_profile_url = get_avatar_url( $user_id, $args );
+	    }
 		$user_profile_field = '';
 		$user_profile_field .= '<div class="profile-pic col-md-4 col-sm-4 col-xs-12">
                 <div class="upload-pic">
                                         <label class="file-upload-label" for="fileUpload">
                       <input type="file" id="fileUpload" value="image" class="hidden">
                       <div class="user-profile-image">
-                                                  <img class="img-responsive" src="'.$user_profile_url.'" alt="">
-                                                <div class="edit-image">
+			  <img class="img-responsive" src="'.$user_profile_url.'" alt="">
+			<div class="edit-image">
                           <div class="text-edit-image"><span class="dashicons dashicons-upload"></span></div>
                         </div>
                       </div>
                     </label>
                      <div class="crop">
                         <div id="upload-demo"></div>
-                        <input class="btn" type="submit" id="upload-image" name="upload_image" value="UPDATE PICTURE" style="display:none;">     
-                        <span class="profile-loader">
-                          <img src="" class="ajax-loader" style="display: none;">                  
-                          </span>
+                        <input class="btn" type="submit" id="upload-image" name="upload_image" value="UPDATE PICTURE" style="display:none;">
                     </div>
-
                 </div>
-
               </div>';
    		return $user_profile_field;
 	}
@@ -202,12 +208,12 @@ class User_profile_croppie_Public {
 	} 
 
 	public function update_user_profile_picture( ) {
-    if (isset($_FILES)) {      
-			if (!empty($_FILES)) {
+	if (isset($_FILES)) {      
+		if (!empty($_FILES)) {
             	# code...
             	$_FILES['file_upload']['name'] = "user_".$_REQUEST['user_id'].".png";
-              $file_att_upload = $this->pf_upload_image('file_upload','user_'.$_REQUEST['user_id']);
-              //echo "<pre>";print_r($file_att_upload);exit;
+              	$file_att_upload = $this->pf_upload_image('file_upload','user_'.$_REQUEST['user_id']);
+              	//echo "<pre>";print_r($file_att_upload);exit;
              	//  $test = update_field('field_59cb0d7bb0e8f',$att['attach_id'],'user_'.$_REQUEST['user_id']);//change {field_key} to actual key
             	$user_profile_field_upload = update_user_meta( $_REQUEST['user_id'], 'user_meta_image', $file_att_upload['url'] );
              	//var_dump($att);
@@ -220,169 +226,9 @@ class User_profile_croppie_Public {
 	    die();
 	}
 
-	public function user_profile_field_script(){    
+	public function user_profile_field_id(){    
  		$user_id = get_current_user_id();
 	?>
-
-	<script type="text/javascript">
-    	jQuery(document).ready(function($) {        	
-      		var userId = <?php echo $user_id; ?>;
-        	jQuery(".crop").hide();
-        	var $uploadCrop;
-        	function readFile(input) {
-            	if (input.files && input.files[0]) {
-                	var reader = new FileReader();
-                reader.onload = function (e) {
-                    jQuery('#upload-demo').addClass('ready');
-                    $uploadCrop.croppie('bind', {
-                        url: e.target.result
-                    }).then(function(){
-                        console.log('jQuery bind complete');
-                    });
-                }
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                swal("Sorry - you're browser doesn't support the FileReader API");
-            }
-        	}
-
-	        $uploadCrop = jQuery('#upload-demo').croppie({
-    	        enableExif: true,
-        	    enableOrientation: true,
-            	viewport: {
-                	width: 250,
-                	height: 250,
-                	type: 'square'
-            	},
-            	boundary: {
-	                width: 300,
-    	            height: 300
-        	    }
-        	});
-
-			jQuery('#fileUpload').on('change',function(e){
-            	jQuery(".file-upload-label").hide();
-            	jQuery(".crop, #upload-image").show();
-            	readFile(this);
-        	});
-
-			jQuery(document).on('click','#upload-image', function (e) {
-        var ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>";
-        	jQuery('.ajax-loader').show();
-	        		$uploadCrop.croppie('result', {
-                		type: 'canvas',
-                		size: 'viewport',
-                		format: 'png'
-            		}).then(function (canvas) {
-                		popupResult({
-                    		src: canvas
-                		});
-                	var formData = new FormData();
-                    //urltoFile(canvas, 'user_' + userId + '.png').then(function(file){});
-
-                	var base_file = base64_to_image(canvas, 'user_' + userId + '.png');  
-                	formData.append('file_upload', base_file );
-                	formData.append('user_id', (typeof userId == 'undefined' ? 0 : userId));
-                	formData.append('action','update_user_profile_picture');
-
-                	jQuery.ajax({
-	                    url         : ajaxurl,
-	                    type        : "POST",
-	                    data        : formData,
-	                    dataType    : 'json',
-	                    processData : false,
-	                    contentType : false,
-	                    cache       : false,
-	                    success     : function (response) {
-	                       jQuery('.ajax-loader').hide();
-	                        if ( !response.result ) {
-	                            swal('Oops. Something went wrong. Please try again.');
-
-	                        }
-	                        setTimeout(function() { location.reload(); }, 500 );
-	                    }
-                	});
-            	});
-        	});
-
-           function popupResult(result) {
-            	jQuery('.user-profile-image img').attr('src', result.src);
-            	jQuery('#label-sidebar-inner img.profile-pic').attr('src', result.src);
-        	}
-
-           //return a promise that resolves with a File instance
-        	function urltoFile(url, filename, mimeType){
-                      
-          	mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
-          	return (fetch(url)
-                  .then(function(res){return res.arrayBuffer();})
-                  .then(function(buf){return new File([buf], filename, {type:mimeType});})
-          	);
-        	}
-
-	        /**
-	         * Convert a base64 string in a Blob according to the data and contentType.
-	         * 
-	         * @param b64Data {String} Pure base64 string without contentType
-	         * @param contentType {String} the content type of the file i.e (image/jpeg - image/png - text/plain)
-	         * @param sliceSize {Int} SliceSize to process the byteCharacters
-	         * @see http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
-	         * @return Blob
-	         */
-
-	        function base64_to_image(url, filename, mimeType){
-
-	          // Get the form element withot jQuery
-	          //var form = document.getElementById("myAwesomeForm");
-
-	          var ImageURL = url;
-
-	          // Split the base64 string in data and contentType
-	          var block = ImageURL.split(";");
-
-	          // Get the content type of the image
-	          var contentType = block[0].split(":")[1];// In this case "image/gif"
-
-	          // get the real base64 content of the file
-	          var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
-
-
-	          // Convert it to a blob to upload
-	          var blob = b64toBlob(realData, contentType);
-
-	          // Create a FormData and append the file with "image" as parameter name
-	          //var formDataToUpload = new FormData(form);
-	          //formDataToUpload.append("image", blob);
-
-	          return blob;
-	          
-	        }
-
-	        function b64toBlob(b64Data, contentType, sliceSize) {
-	          contentType = contentType || '';
-	          sliceSize = sliceSize || 512;
-
-	          var byteCharacters = atob(b64Data);
-	          var byteArrays = [];
-
-	          for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-	              var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-	              var byteNumbers = new Array(slice.length);
-	              for (var i = 0; i < slice.length; i++) {
-	                  byteNumbers[i] = slice.charCodeAt(i);
-	              }
-
-	              var byteArray = new Uint8Array(byteNumbers);
-
-	              byteArrays.push(byteArray);
-	          }
-
-	          var blob = new Blob(byteArrays, {type: contentType});
-
-	          return blob;
-	        }
-		});
-</script>
-<?php }
+    	<input type="hidden" id="croppie_user_id" value="<?php echo $user_id ?>" />
+	<?php }
 }
