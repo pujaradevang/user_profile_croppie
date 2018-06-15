@@ -11,10 +11,6 @@ label {
     margin-bottom: 5px;
     font-weight: bold;
 }
-.hidden {
-    display: none !important;
-    visibility: hidden !important;
-}
 .user-profile-image {
     position: relative;
     width: 100%;
